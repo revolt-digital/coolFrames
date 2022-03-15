@@ -1,23 +1,14 @@
 import React, { useEffect, useContext, useState, useRef, createContext } from 'react';
 import useWindowSize from '@revolt-digital/use-window-size';
 import { makeMatches, makeIndexes } from './helpers';
-import { Frame } from './types';
+import Stepper from './stepper';
+import { Props, Values } from './types';
 
 const DESKTOP_BREAKPOINT = 1024;
 const THRESHOLD = 100; // min distance traveled to be considered swipe
 let idle = true;
 let wheeling:any;
 let sy: number = 0;
-
-type Values = {
-  frames: Frame[];
-  selectedIndex: number;
-  frameIndex: number;
-  setSelectedIndex: (index: number) => void;
-  isFrameSelected: (index: number) => void;
-  getSubFrameIndex: (index: number) => void;
-  translateY: number;
-}
 
 const CoolFramesContext = createContext<Values>({} as Values);
 
@@ -26,7 +17,7 @@ export const useCoolFrames = () => {
   return context;
 };
 
-export const CoolFramesProvider = ({ frames: _frames, children }: { frames: Frame[], children: React.ReactNode }) => {
+export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
   const [selectedIndex, _setSelectedIndex] = useState(0);
   const [translateY, setTranslateY] = useState(0);
   const windowSize = useWindowSize();
@@ -141,3 +132,39 @@ export const CoolFramesProvider = ({ frames: _frames, children }: { frames: Fram
     </CoolFramesContext.Provider>
   );
 }
+
+
+export const CoolFrames = () => {
+  const { frames, isFrameSelected, getSubFrameIndex, selectedIndex, setSelectedIndex, translateY } = useCoolFrames();
+
+  const frameProps = (index: number, sub: string[], extraProps = {}) => {
+    const subFrames = sub.length + 1;
+    const aux = [];
+
+    for(let i=0; i<subFrames; i++) {
+      aux.push(index + i);
+    }
+
+    // Mark as selected the first frame and the subFrame
+    return {
+      key: index,
+      selected: isFrameSelected(index),
+      subFrame: getSubFrameIndex(index),
+      extraProps
+    };
+  };
+
+  return (
+    <>
+      <Stepper frames={frames} selectedIndex={selectedIndex} setFrame={setSelectedIndex} />
+
+      <div id="frames" className="frames" style={{ transform: `translateY(${translateY}px)` }}>
+        <div>
+          {frames.map(({ Component, sub, extraProps }, index) => (
+            <Component {...frameProps(index, sub, extraProps)} />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
