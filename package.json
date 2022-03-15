@@ -1,0 +1,32 @@
+{
+  "name": "@revolt-digital/cool-frames",
+  "version": "0.0.1",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "repository": "git@github.com:revolt-digital/coolFrames.git",
+  "author": "fernandomunoz <fernando.munoz@revolt.digital>",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "prepublishOnly": "yarn build"
+  },
+  "peerDependencies": {
+    "@revolt-digital/use-window-size": "^0.0.7",
+    "classnames": "^2.3.1",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.40",
+    "typescript": "^4.6.2"
+  },
+  "files": [
+    "/lib"
+  ]
+}
