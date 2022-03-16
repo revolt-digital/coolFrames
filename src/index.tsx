@@ -39,7 +39,6 @@ export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
 
   const next = () => {
     const limit = frames.reduce((acc, cur) => acc + Math.max(1, cur.sub.length), -1);
-    console.log({ limit });
     const nextValue = stateRef.current + 1;
     setSelectedIndex(nextValue > limit ? limit : nextValue);
   };
@@ -66,12 +65,10 @@ export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
   const handleWheel = (e: any) => {
     clearTimeout(wheeling);
 
-    console.log(e.deltaY);
-
     wheeling = setTimeout(() => {
       wheeling = undefined;
       idle = true;
-    }, 250);
+    }, 500);
 
     if(idle) {
       e.deltaY > 0 ? next() : prev();
