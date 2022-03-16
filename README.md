@@ -17,8 +17,7 @@ You can import the .scss or .css styles
 ```
 import React, { useEffect } from 'react';
 import useWindowSize from '@revolt-digital/use-window-size';
-import { CoolFramesProvider } from '@revolt-digital/cool-frames';
-import CoolFrames from '@revolt-digital/cool-frames/component';
+import { CoolFramesProvider, CoolFrames } from '@revolt-digital/cool-frames';
 
 const frames = [
     {

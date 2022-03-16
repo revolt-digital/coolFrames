@@ -9,6 +9,8 @@ type Props = {
   setFrame: (position: number) => void;
 };
 
+const CIRCLE_HEIGHT = 18.5;
+
 export default ({ frames, selectedIndex, setFrame }: Props) => {
   const matches = makeMatches(frames);
   const indexes = makeIndexes(frames);
@@ -24,14 +26,20 @@ export default ({ frames, selectedIndex, setFrame }: Props) => {
               data-label={label}
             />
           ) : <></>}
-          {sub.length > 0 && matches[selectedIndex] === index && sub.map((item: any, subIndex: number) => (
-            <button
-              key={subIndex}
-              className={classnames('circle', { selected: selectedIndex === indexes[index][subIndex] })}
-              onClick={() => setFrame(indexes[index][subIndex])}
-              data-label={item}
-            />
-          ))}
+          {sub.length > 0 && matches[selectedIndex] === index && (
+            <div className="circles" style={{ height: `${sub.length * CIRCLE_HEIGHT}px` }}>
+              <div>
+                {sub.map((item: any, subIndex: number) => (
+                  <button
+                    key={subIndex}
+                    className={classnames('circle', { selected: selectedIndex === indexes[index][subIndex] })}
+                    onClick={() => setFrame(indexes[index][subIndex])}
+                    data-label={item}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </React.Fragment>
       ))}
     </div>

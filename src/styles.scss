@@ -42,7 +42,22 @@ $button-transition: opacity .5s linear;
     }
   }
 
-  > button {
+  .circles {
+    position: relative;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding: 1.5px 0;
+      position: absolute;
+      top: 0;
+      animation: .45s ease-out circlesAnim forwards;
+    }
+  }
+
+  button {
 
     &.line {
       position: relative;
@@ -72,7 +87,7 @@ $button-transition: opacity .5s linear;
 
     &.circle {
       position: relative;
-      margin: 6px 0 5px 2px;
+      margin-left: 2px;
 
       &::before {
         content: '';
@@ -107,10 +122,32 @@ $button-transition: opacity .5s linear;
 
     &:hover::after {
       display: block;
+      animation: .75s linear stepperAnim;
     }
 
     &.selected::after {
       display: block;
+      animation: .75s linear stepperAnim;
     }
+  }
+}
+
+@keyframes stepperAnim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes circlesAnim {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: 100%;
+    opacity: 1;
   }
 }
