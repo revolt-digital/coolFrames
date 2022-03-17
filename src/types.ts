@@ -8,6 +8,8 @@ export type Frame = {
   extraProps?: any;
 }
 
+export type Direction = 'up' | 'down' | undefined;
+
 export type Values = {
   frames: Frame[];
   selectedIndex: number;
@@ -16,6 +18,8 @@ export type Values = {
   isFrameSelected: (index: number) => void;
   getSubFrameIndex: (index: number) => void;
   translateY: number;
+  lastDirection: Direction;
+  prevIndex?: number;
 }
 
 export type Props = {

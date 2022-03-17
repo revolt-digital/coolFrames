@@ -1,16 +1,17 @@
-import React, { useEffect, useContext, useState, useRef, createContext } from 'react';
+import React, { useEffect, useContext, useState, createContext } from 'react';
 import useWindowSize from '@revolt-digital/use-window-size';
+import useStateRef from '@revolt-digital/use-state-ref';
 import { makeMatches, makeIndexes } from './helpers';
 import Stepper from './stepper';
-import { Props, Values } from './types';
+import { Props, Values, Direction } from './types';
+
+const CoolFramesContext = createContext<Values>({} as Values);
 
 const DESKTOP_BREAKPOINT = 1024;
 const THRESHOLD = 100; // min distance traveled to be considered swipe
 let idle = true;
-let wheeling:any;
+let wheeling: any;
 let sy: number = 0;
-
-const CoolFramesContext = createContext<Values>({} as Values);
 
 export const useCoolFrames = () => {
   const context = useContext(CoolFramesContext);
@@ -18,33 +19,28 @@ export const useCoolFrames = () => {
 };
 
 export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
-  const [selectedIndex, _setSelectedIndex] = useState(0);
+  const [selectedIndexRef, setSelectedIndex, prevIndex] = useStateRef(0);
   const [translateY, setTranslateY] = useState(0);
+  const [lastDirection, setLastDirection] = useState<Direction>();
   const windowSize = useWindowSize();
-  const stateRef = useRef(selectedIndex);
   const frames = _frames.filter(({ desktop = true }) => (windowSize.width < DESKTOP_BREAKPOINT ? true : desktop));
 
   const matches = makeMatches(frames);
   const indexes = makeIndexes(frames);
 
-  const setSelectedIndex = (index: number) => {
-    stateRef.current = index;
-    _setSelectedIndex(index);
-  };
-
   const prev = () => {
-    const nextValue = stateRef.current - 1;
+    const nextValue = selectedIndexRef.current - 1;
     setSelectedIndex(nextValue < 0 ? 0 : nextValue);
   };
 
   const next = () => {
     const limit = frames.reduce((acc, cur) => acc + Math.max(1, cur.sub.length), -1);
-    const nextValue = stateRef.current + 1;
+    const nextValue = selectedIndexRef.current + 1;
     setSelectedIndex(nextValue > limit ? limit : nextValue);
   };
 
   const isFrameSelected = (index: number) => {
-    const i = stateRef.current;
+    const i = selectedIndexRef.current;
     return matches[i] === index;
   };
 
@@ -53,13 +49,13 @@ export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
       return 0;
     }
 
-    const key = indexes[matches[stateRef.current]];
+    const key = indexes[matches[selectedIndexRef.current]];
 
     if(!Array.isArray(key)) {
       return 0;
     }
 
-    return key.findIndex((v: number) => v === selectedIndex);
+    return key.findIndex((v: number) => v === selectedIndexRef.current);
   };
 
   const handleWheel = (e: any) => {
@@ -90,13 +86,14 @@ export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
   };
 
   const updateTranslateY = () => {
-    const index = matches[stateRef.current];
+    const index = matches[selectedIndexRef.current];
     setTranslateY(typeof window !== 'undefined' ? window.innerHeight * index * -1 : 0);
   };
 
   useEffect(() => {
+    setLastDirection(selectedIndexRef.current > prevIndex ? 'down' : 'up');
     updateTranslateY();
-  }, [stateRef.current]);
+  }, [selectedIndexRef.current]);
 
   useEffect(() => {
     updateTranslateY();
@@ -118,21 +115,22 @@ export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
   return (
     <CoolFramesContext.Provider value={{
       frames,
-      frameIndex: matches[stateRef.current],
-      selectedIndex: stateRef.current,
+      prevIndex,
+      frameIndex: matches[selectedIndexRef.current],
+      selectedIndex: selectedIndexRef.current,
       setSelectedIndex,
       isFrameSelected,
       getSubFrameIndex,
-      translateY
+      translateY,
+      lastDirection
     }}>
       {children}
     </CoolFramesContext.Provider>
   );
 }
 
-
 export const CoolFrames = () => {
-  const { frames, isFrameSelected, getSubFrameIndex, selectedIndex, setSelectedIndex, translateY } = useCoolFrames();
+  const { frames, isFrameSelected, getSubFrameIndex, selectedIndex, setSelectedIndex, translateY, lastDirection } = useCoolFrames();
 
   const frameProps = (index: number, sub: string[], extraProps = {}) => {
     const subFrames = sub.length + 1;
@@ -145,6 +143,7 @@ export const CoolFrames = () => {
     // Mark as selected the first frame and the subFrame
     return {
       key: index,
+      lastDirection,
       selected: isFrameSelected(index),
       subFrame: getSubFrameIndex(index),
       extraProps
