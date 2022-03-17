@@ -2,7 +2,10 @@
 
 ### Install
 
-```yarn add @revolt-digital/cool-frames```
+```
+yarn add @revolt-digital/use-state-ref
+yarn add @revolt-digital/cool-frames
+```
 
 ### Styles
 
