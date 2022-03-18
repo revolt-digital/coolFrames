@@ -58,3 +58,23 @@ export default () => {
     );
 };
 ```
+
+### Options
+
+| Name | Type | Description |
+| :---: | :---: | :---: |
+| frames | Frame[] | Array of frames. A frame represents a single view in a determined position. Params: label, subs (subFrames), Component, desktop (true by default) and extraProps (if it were needed). |
+
+### Hook
+
+| Name | Type | Description |
+| :---: | :---: | :---: |
+| frames | Frame[] |  |
+| selectedIndex | number | Index in the stepper. |
+| prevIndex | number | It is the previous index selected. |
+| frameIndex | number | I represent the subframe index. It will be 0 when there isn't subrames for the frame. |
+| setSelectedIndex | (index: number) => void; |  |
+| isFrameSelected | (index: number) => void; |  |
+| getSubFrameIndex | (index: number) => void; |  |
+| translateY | number |  |
+| lastDirection | Direction | It can be 'up, 'down' or undefined. |
