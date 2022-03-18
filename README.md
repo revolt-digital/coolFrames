@@ -72,9 +72,16 @@ export default () => {
 | frames | Frame[] |  |
 | selectedIndex | number | Index in the stepper. |
 | prevIndex | number | It is the previous index selected. |
-| frameIndex | number | I represent the subframe index. It will be 0 when there isn't subrames for the frame. |
+| frameIndex | number | It represent the subframe index. It will be 0 when there aren't subframes for the frame. |
 | setSelectedIndex | (index: number) => void; |  |
 | isFrameSelected | (index: number) => void; |  |
 | getSubFrameIndex | (index: number) => void; |  |
 | translateY | number |  |
 | lastDirection | Direction | It can be 'up, 'down' or undefined. |
+
+### How does it look?
+
+![Alt text](./examples/pic-2.png "Desktop")
+
+![Alt text](./examples/pic-1.png "Mobile")
+
