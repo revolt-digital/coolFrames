@@ -44,15 +44,15 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@revolt-digital/use-state-ref@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@revolt-digital/use-state-ref/-/use-state-ref-0.0.3.tgz#733bcc6e2f5805d0d4c7ccbd3f03caa14165a060"
-  integrity sha512-sku/R26Zs+mTIy3+P23PaW6N6Z2vk7HtSu76MltgnhVaSpc6Ia/1TJcwJ9CFP73GMC9f1KB4ic55akJ/2Y8ssA==
+"@revolt-digital/use-state-ref@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@revolt-digital/use-state-ref/-/use-state-ref-0.0.4.tgz#9fd4cce318d55c4972773de888d07e2534d1427f"
+  integrity sha512-NSrSdkvioUJEB2KJxzTAsoHNpcQVR4Yrnnro/zxuxEYUEQgS9kn3Pp3wKIlOt9+1xtSc5qCX4hfK1brXaC9ivg==
 
-"@revolt-digital/use-window-size@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@revolt-digital/use-window-size/-/use-window-size-0.0.7.tgz#9cb2e6e951968c2ef84be8f5eeec0a445b22dc4f"
-  integrity sha512-qjv6ylmZ8HMqmxPOpWfYHbmJ4W+xkA4to1TjaGbjG2l8nhI+zErzCjLg0Fxe6vEJ/ASYnu1nVm82IioVeY2meQ==
+"@revolt-digital/use-window-size@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@revolt-digital/use-window-size/-/use-window-size-0.0.8.tgz#3dd624ddf4cac972deaf1c5616106a727c84c30d"
+  integrity sha512-7He8SsxsE1v9Y6HEvNto3Vtq4Q4B150mrc1WYZZ/MaLORm+wtP59Uy6Mih/hdMTIl0YMAu54E9nb93Xs3B5Lvw==
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -1679,6 +1679,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+wheel-indicator@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/wheel-indicator/-/wheel-indicator-1.3.0.tgz#7288b902467b7c72cca18e652e2495c54325e7b0"
+  integrity sha512-V1gavoYZQ6MLNp+wf0P3jqQcIy2xrpALjvoZxZa4ZB2C/XLVG8HkfbtfKTgQQrLqy9tCTlWrvwdVTGpSdOo1aA==
 
 which@^2.0.1, which@^2.0.2:
   version "2.0.2"

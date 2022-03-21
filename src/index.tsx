@@ -1,17 +1,19 @@
 import React, { useEffect, useContext, useState, createContext } from 'react';
 import useWindowSize from '@revolt-digital/use-window-size';
 import useStateRef from '@revolt-digital/use-state-ref';
+import WheelIndicator from 'wheel-indicator';
 import { makeMatches, makeIndexes } from './helpers';
 import Stepper from './stepper';
 import { Props, Values, Direction } from './types';
 
 const CoolFramesContext = createContext<Values>({} as Values);
 
+const e: Element | null = typeof window !== 'undefined' ? document.querySelector('#frames') : null;
 const DESKTOP_BREAKPOINT = 1024;
 const THRESHOLD = 100; // min distance traveled to be considered swipe
-let idle = true;
-let wheeling: any;
 let sy: number = 0;
+let waiting: any;
+let stop = true;
 
 export const useCoolFrames = () => {
   const context = useContext(CoolFramesContext);
@@ -58,18 +60,23 @@ export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
     return key.findIndex((v: number) => v === selectedIndexRef.current);
   };
 
-  const handleWheel = (e: any) => {
-    clearTimeout(wheeling);
+  const wheelIndicator = () => {
+    new WheelIndicator({
+      elem: e as any,
+      callback: ({ direction }) => {
+        clearTimeout(waiting);
 
-    wheeling = setTimeout(() => {
-      wheeling = undefined;
-      idle = true;
-    }, 500);
+        waiting = setTimeout(() => {
+          waiting = undefined;
+          stop = true;
+        }, 350);
 
-    if(idle) {
-      e.deltaY > 0 ? next() : prev();
-      idle = false;
-    }
+        if(stop) {
+          direction === 'down' ? next() : prev();
+          stop = false;
+        }
+      }
+    });
   };
 
   const handleStartTouch = (e: any) => {
@@ -100,14 +107,12 @@ export const CoolFramesProvider = ({ frames: _frames, children }: Props) => {
   }, [windowSize]);
 
   useEffect(() => {
-    const e = document.querySelector('#frames');
-
     if(e) {
       if ('ontouchstart' in document.documentElement) {
         e.addEventListener('touchstart', handleStartTouch, { passive: true });
         e.addEventListener('touchend', handleEndTouch, { passive: true });
       } else {
-        e.addEventListener('wheel', handleWheel);
+        wheelIndicator();
       }
     }
   }, []);
