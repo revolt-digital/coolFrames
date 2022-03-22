@@ -159,7 +159,7 @@ export const CoolFrames = () => {
     <>
       <Stepper frames={frames} selectedIndex={selectedIndex} setFrame={setSelectedIndex} />
 
-      <div id="frames" className="frames" style={{ transform: `translateY(${translateY}px)` }}>
+      <div id="frames" className="frames" style={{ transform: `translate3d(0, ${translateY}px, 0)` }}>
         <div>
           {frames.map(({ Component, sub, extraProps }, index) => (
             <Component {...frameProps(index, sub, extraProps)} />
